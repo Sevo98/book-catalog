@@ -1,6 +1,7 @@
 <?php
 namespace app\controllers;
 
+use app\models\SignupForm;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -44,6 +45,21 @@ class SiteController extends Controller
     {
         // Главная страница — лендинг с навигацией
         return $this->render('index');
+    }
+
+    public function actionSignup()
+    {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $model = new SignupForm();
+        if ($model->load(Yii::$app->request->post()) && $model->signup()) {
+            Yii::$app->session->setFlash('success', 'Регистрация успешна! Теперь вы можете войти.');
+            return $this->redirect(['site/login']);
+        }
+
+        return $this->render('signup', ['model' => $model]);
     }
 
     public function actionLogin()

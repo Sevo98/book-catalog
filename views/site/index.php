@@ -15,7 +15,8 @@ $this->title = 'Каталог книг';
 
     <div class="mt-4">
         <?php if (Yii::$app->user->isGuest): ?>
-            <?= Html::a('Войти', ['site/login'], ['class' => 'btn btn-outline-success']) ?>
+            <?= Html::a('Авторизация', ['site/login'], ['class' => 'btn btn-outline-success']) ?>
+            <?= Html::a('Регистрация', ['site/signup'], ['class' => 'btn btn-outline-warning']) ?>
         <?php else: ?>
             <?php
             $logPath = Yii::getAlias('@webroot/logs');
