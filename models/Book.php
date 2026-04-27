@@ -89,9 +89,11 @@ class Book extends \yii\db\ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
 
-        if ($this->authorIds !== null) {
-            $this->unlinkAll('bookAuthors', true);
-            foreach ($this->authorIds as $authorId) {
+        $authorIds = is_array($this->authorIds) ? $this->authorIds : [];
+
+        $this->unlinkAll('bookAuthors', true);
+        foreach ($authorIds as $authorId) {
+            if (!empty($authorId)) {
                 $this->link('authors', Author::findOne($authorId));
             }
         }

@@ -112,7 +112,13 @@ class BookController extends Controller
 
     private function notifySubscribers(Book $model): void
     {
-        foreach ($model->authors as $author) {
+        $authors = $model->getAuthors()->all();
+
+        if (empty($authors)) {
+            return;
+        }
+
+        foreach ($authors as $author) {
             $subscribers = Subscription::findAll(['author_id' => $author->id]);
             foreach ($subscribers as $sub) {
                 Yii::$app->smsNotifier->sendNewBookNotification(
